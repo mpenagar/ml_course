@@ -1,7 +1,7 @@
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 
-__all__ = ['BaseModel', 'Regressor1']
+__all__ = ['BaseModel', 'Regressor1', 'Regressor2']
 
 class BaseModel:
     """
@@ -68,7 +68,7 @@ class Regressor2(BaseModel):
         # Instantiate the specific scikit-learn model
         sklearn_model = DecisionTreeRegressor(
             max_depth=max_depth,
-            min_samples_split=min_split_size
+            min_samples_split=min_split_size,
             random_state=random_state
         )
         

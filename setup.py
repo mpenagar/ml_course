@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(
     name='ml_course',
-    version='0.1.1',
+    version='0.1.2',
     description='Educational wrappers for Machine Learning models',
     author='Your Name/Institution',
     # We specify the single Python module instead of a package/folder

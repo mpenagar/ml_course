@@ -64,7 +64,7 @@ class Regressor2(BaseModel):
     - random_state (int, default=None): Controls the randomness of the estimator. To obtain a deterministic behaviour during fitting, random_state has to be fixed to an integer
     """
     
-    def __init__(self, complexity=None, min_split_size=10, random_state=None):
+    def __init__(self, complexity=None, min_split_size=2, random_state=None):
         # Instantiate the specific scikit-learn model
         sklearn_model = DecisionTreeRegressor(
             max_depth=complexity,

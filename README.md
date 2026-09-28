@@ -7,7 +7,7 @@ Python package containing educational regression and classification models for t
 Run the following command in your terminal or Jupyter Notebook cell:
 
 ```bas
-pip install git+[https://github.com/your-username/intro_ml_course.git](https://github.com/your-username/intro_ml_course.git)
+pip install git+https://github.com/your-username/intro_ml_course.git
 ```
 
 ## Usage Example

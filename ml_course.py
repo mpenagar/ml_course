@@ -67,7 +67,7 @@ class Regressor2(BaseModel):
     def __init__(self, complexity=None, min_split_size=10, random_state=None):
         # Instantiate the specific scikit-learn model
         sklearn_model = DecisionTreeRegressor(
-            max_depth=max_depth,
+            max_depth=complexity,
             min_samples_split=min_split_size,
             random_state=random_state
         )

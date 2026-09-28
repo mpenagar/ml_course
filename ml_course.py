@@ -47,14 +47,6 @@ class SimpleRegressor(BaseModel):
     
     Parameters
     ----------
-    criterion : {"squared_error", "absolute_error", "poisson"}, default="squared_error"
-        The function to measure the quality of a split. Supported criteria
-        are "squared_error" for the mean squared error, which is equal to
-        variance reduction as feature selection criterion and minimizes the L2
-        loss using the mean of each terminal node, "absolute_error" for the mean
-        absolute error, which minimizes the L1 loss using the median of each terminal
-        node, and "poisson" which uses reduction in Poisson deviance to find splits,
-        also using the mean of each terminal node.
     """
     
     def __init__(self):        

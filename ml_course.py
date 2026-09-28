@@ -1,7 +1,7 @@
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 
-__all__ = ['BaseModel', 'Regressor1', 'Regressor2']
+__all__ = ['BaseModel', 'SimpleRegressor', 'ComplexRegressor']
 
 class BaseModel:
     """
@@ -41,7 +41,7 @@ class BaseModel:
         return self._model.score(X, y)
 
 
-class Regressor1(BaseModel):
+class SimpleRegressor(BaseModel):
     """
     A really simple regression model without hyper-parameters.
     
@@ -54,7 +54,7 @@ class Regressor1(BaseModel):
         # Pass the instantiated model to the parent class
         super().__init__(model=sklearn_model)
         
-class Regressor2(BaseModel):
+class ComplexRegressor(BaseModel):
     """
     A complex regression model with many hyper-parameters.
     

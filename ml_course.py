@@ -45,27 +45,60 @@ class SimpleRegressor(BaseModel):
     """
     A really simple regression model without hyper-parameters.
     
+    Parameters
+    ----------
+    criterion : {"squared_error", "absolute_error", "poisson"}, default="squared_error"
+        The function to measure the quality of a split. Supported criteria
+        are "squared_error" for the mean squared error, which is equal to
+        variance reduction as feature selection criterion and minimizes the L2
+        loss using the mean of each terminal node, "absolute_error" for the mean
+        absolute error, which minimizes the L1 loss using the median of each terminal
+        node, and "poisson" which uses reduction in Poisson deviance to find splits,
+        also using the mean of each terminal node.
     """
     
     def __init__(self):        
-        # Instantiate the specific scikit-learn model
+        """
+        Initializes the regressor.
+        """
         sklearn_model = LinearRegression()
         
         # Pass the instantiated model to the parent class
         super().__init__(model=sklearn_model)
         
 class ComplexRegressor(BaseModel):
-    """
-    A regression model that learns by continuously partitioning the dataset into smaller groups based on the input features. At each step, it divides the data into more specific subsets, ultimately making a tailored prediction for each final group. While powerful, this model requires careful tuning of its hyper-parameters to ensure it learns general trends rather than just memorizing the training data.
+    """A somehow complex regression model with some hyper-parameters
     
-    Parameters:
-    - complexity (int, default=None): Controls the maximum complexity of the model's internal structure. A higher value allows the model to learn more intricate patterns from the training data, but it heavily increases the risk of overfitting (memorizing the specific training examples instead of learning the general trend). If None, there is no limit on how complex the model can become (use with caution!).
-    - min_split_size (int, default=2): The minimum amount of data points required before the model is allowed to divide a group into even smaller pieces. Increasing this value stops the model from creating overly complex and specific rules for very small sets of data.
-    - random_state (int, default=None): Controls the randomness of the estimator. To obtain a deterministic behaviour during fitting, random_state has to be fixed to an integer
+    A regression model that learns by continuously partitioning the dataset into smaller
+    groups based on the input features. At each step, it divides the data into more specific
+    subsets, ultimately making a tailored prediction for each final group. While powerful,
+    this model requires careful tuning of its hyper-parameters to ensure it learns general
+    trends rather than just memorizing the training data.    
+
+    Parameters
+    ----------
+    complexity : int, default=None
+        Controls the maximum complexity of the model's internal structure. A higher value
+        allows the model to learn more intricate patterns from the training data, but it 
+        heavily increases the risk of overfitting (memorizing the specific training 
+        examples instead of learning the general trend). If None, there is no limit on 
+        how complex the model can become (use with caution!).
+        
+    min_split_size : int, default=2
+        The minimum amount of data points required before the model is allowed to divide
+        a group into even smaller pieces. Increasing this value stops the model from 
+        creating overly complex and specific rules for very small sets of data.
+
+    random_state : int, default=None
+        Controls the randomness of the estimator. To obtain a deterministic behaviour 
+        during fitting, random_state has to be fixed to an integer
     """
     
     def __init__(self, complexity=None, min_split_size=2, random_state=None):
-        # Instantiate the specific scikit-learn model
+        """
+        Initializes the regressor.
+        
+        """
         sklearn_model = DecisionTreeRegressor(
             max_depth=complexity,
             min_samples_split=min_split_size,

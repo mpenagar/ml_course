@@ -56,10 +56,10 @@ class SimpleRegressor(BaseModel):
         
 class ComplexRegressor(BaseModel):
     """
-    A complex regression model with many hyper-parameters.
+    A regression model that learns by continuously partitioning the dataset into smaller groups based on the input features. At each step, it divides the data into more specific subsets, ultimately making a tailored prediction for each final group. While powerful, this model requires careful tuning of its hyper-parameters to ensure it learns general trends rather than just memorizing the training data.
     
     Parameters:
-    - complexity (int, default=None): Controls the maximum complexity of the model's decision rules. A higher value allows the model to learn more intricate patterns from the training data, but it heavily increases the risk of overfitting (memorizing the specific training examples instead of learning the general trend). If None, there is no limit on how complex the model can become (use with caution!).
+    - complexity (int, default=None): Controls the maximum complexity of the model's internal structure. A higher value allows the model to learn more intricate patterns from the training data, but it heavily increases the risk of overfitting (memorizing the specific training examples instead of learning the general trend). If None, there is no limit on how complex the model can become (use with caution!).
     - min_split_size (int, default=2): The minimum amount of data points required before the model is allowed to divide a group into even smaller pieces. Increasing this value stops the model from creating overly complex and specific rules for very small sets of data.
     - random_state (int, default=None): Controls the randomness of the estimator. To obtain a deterministic behaviour during fitting, random_state has to be fixed to an integer
     """

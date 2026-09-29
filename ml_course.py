@@ -1,9 +1,11 @@
+from sklearn.base import BaseEstimator, RegressorMixin
 from sklearn.tree import DecisionTreeRegressor
 from sklearn.linear_model import LinearRegression
 
 __all__ = ['BaseModel', 'SimpleRegressor', 'ComplexRegressor']
 
-class BaseModel:
+# Extend BaseEstimator and RegressorMixin
+class BaseModel(BaseEstimator, RegressorMixin):
     """
     Base wrapper class for all educational Machine Learning models.
     
@@ -33,13 +35,6 @@ class BaseModel:
         """
         return self._model.predict(X)
 
-    def score(self, X, y):
-        """
-        Returns the performance metric (e.g., R-squared or accuracy) 
-        from the underlying model.
-        """
-        return self._model.score(X, y)
-
 
 class SimpleRegressor(BaseModel):
     """
@@ -59,13 +54,13 @@ class SimpleRegressor(BaseModel):
         super().__init__(model=sklearn_model)
         
 class ComplexRegressor(BaseModel):
-    """A somehow complex regression model with some hyper-parameters
+    """A somehow complex regression model with some hyper-parameters.
     
     A regression model that learns by continuously partitioning the dataset into smaller
-    groups based on the input features. At each step, it divides the data into more specific
-    subsets, ultimately making a tailored prediction for each final group. While powerful,
-    this model requires careful tuning of its hyper-parameters to ensure it learns general
-    trends rather than just memorizing the training data.    
+    groups based on the input features. At each step, it randomly divides the data into
+    more specific subsets, ultimately making a tailored prediction for each final group.
+    While powerful, this model requires careful tuning of its hyper-parameters to ensure
+    it learns general trends rather than just memorizing the training data.    
 
     Parameters
     ----------
@@ -91,6 +86,10 @@ class ComplexRegressor(BaseModel):
         Initializes the regressor.
         
         """
+        self.complexity = complexity
+        self.min_split_size = min_split_size
+        self.random_state = random_state
+        
         sklearn_model = DecisionTreeRegressor(
             max_depth=complexity,
             min_samples_split=min_split_size,

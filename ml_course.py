@@ -13,22 +13,6 @@ class BaseModel(BaseEstimator, RegressorMixin):
     by delegating the operations to the underlying scikit-learn model.
     """
     
-    def __init__(self, model):
-        """
-        Initializes the base model wrapper.
-        
-        Parameters:
-        - model: An instantiated scikit-learn model.
-        """
-        self._model = model
-
-    def fit(self, X, y):
-        """
-        Fits the underlying model using the provided training data.
-        """
-        self._model.fit(X, y)
-        return self
-
     def predict(self, X):
         """
         Generates predictions for new data using the underlying model.
@@ -44,14 +28,15 @@ class SimpleRegressor(BaseModel):
     ----------
     """
     
-    def __init__(self):        
+    def fit(self, X, y):
         """
-        Initializes the regressor.
-        """
-        sklearn_model = LinearRegression()
-        
-        # Pass the instantiated model to the parent class
-        super().__init__(model=sklearn_model)
+        Fits the underlying model using the provided training data.
+        """        
+        self._model = LinearRegression()
+
+        self._model.fit(X, y)
+        return self
+
         
 class ComplexRegressor(BaseModel):
     """A somehow complex regression model with some hyper-parameters.
@@ -90,11 +75,18 @@ class ComplexRegressor(BaseModel):
         self.min_split_size = min_split_size
         self.random_state = random_state
         
-        sklearn_model = DecisionTreeRegressor(
-            max_depth=complexity,
-            min_samples_split=min_split_size,
-            random_state=random_state
+
+    def fit(self, X, y):
+        """
+        Fits the model using the provided training data.
+        """
+        self._model = DecisionTreeRegressor(
+            max_depth = self.complexity,
+            min_samples_split = self.min_split_size,
+            random_state = self.random_state
         )
         
-        # Pass the instantiated model to the parent class
-        super().__init__(model=sklearn_model)
+        self._model.fit(X, y)
+        return self
+
+        

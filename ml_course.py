@@ -98,30 +98,42 @@ class ACMEClassifier(BaseEstimator, ClassifierMixin):
     ----------
     regularization_strength : float, default=1.0
         Controls how strictly the model is penalized for being overly complex. 
-        Smaller values create simpler, more generalized boundaries (higher penalty), 
-        while larger values allow the model to fit the training data more closely 
-        (lower penalty), which might lead to overfitting.
+        Higher values apply a stronger penalty, creating simpler and more 
+        generalized boundaries. Smaller values (closer to 0) apply a weaker 
+        penalty, allowing the model to fit the training data more closely, 
+        which might lead to overfitting.
         
     max_iterations : int, default=100
         The maximum number of attempts the model is allowed to make in order 
         to find the optimal boundary. If the model hasn't converged (found 
         the best solution) within this limit, it will stop learning.
+
+    random_state : int, default=None
+        Controls the randomness of the estimator. To obtain a deterministic behaviour 
+        during fitting, random_state has to be fixed to an integer
     """
     
-    def __init__(self, regularization_strength=1.0, max_iterations=100):
+    def __init__(self, regularization_strength=1.0, max_iterations=100, random_state=None):
         """
         Initializes the classifier.
         """
         self.regularization_strength = regularization_strength
         self.max_iterations = max_iterations
+        self.random_state = random_state
 
     def fit(self, X, y):
         """
         Fits the underlying classification model using the provided training data.
         """
+        # Invertimos el valor para que sea intuitivo para los alumnos:
+        # Mayor regularization_strength -> Menor C (Mayor penalización en sklearn)
+        # Se usa max() para evitar divisiones por cero si un alumno pone regularization_strength=0
+        c_param = 1.0 / max(self.regularization_strength, 1e-9)
+        
         self._model = LogisticRegression(
-            C = self.regularization_strength,
-            max_iter = self.max_iterations
+            C = c_param,
+            max_iter = self.max_iterations,
+            random_state = self.random_state,
         )
         
         self._model.fit(X, y)

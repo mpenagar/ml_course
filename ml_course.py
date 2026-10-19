@@ -1,13 +1,12 @@
-from sklearn.base import BaseEstimator, RegressorMixin
+from sklearn.base import BaseEstimator, RegressorMixin, ClassifierMixin
 from sklearn.tree import DecisionTreeRegressor
-from sklearn.linear_model import LinearRegression
+from sklearn.linear_model import LinearRegression, LogisticRegression
 
-__all__ = ['BaseModel', 'SimpleRegressor', 'ComplexRegressor']
+__all__ = ['BaseModel', 'SimpleRegressor', 'ComplexRegressor', 'ACMEClassifier']
 
-# Extend BaseEstimator and RegressorMixin
 class BaseModel(BaseEstimator, RegressorMixin):
     """
-    Base wrapper class for all educational Machine Learning models.
+    Base wrapper class for all educational Machine Learning regression models.
     
     This class handles the standard interface (fit, predict, score) 
     by delegating the operations to the underlying scikit-learn model.
@@ -33,7 +32,6 @@ class SimpleRegressor(BaseModel):
         Fits the underlying model using the provided training data.
         """        
         self._model = LinearRegression()
-
         self._model.fit(X, y)
         return self
 
@@ -69,7 +67,6 @@ class ComplexRegressor(BaseModel):
     def __init__(self, complexity=None, min_split_size=2, random_state=None):
         """
         Initializes the regressor.
-        
         """
         self.complexity = complexity
         self.min_split_size = min_split_size
@@ -89,4 +86,56 @@ class ComplexRegressor(BaseModel):
         self._model.fit(X, y)
         return self
 
+
+class ACMEClassifier(BaseEstimator, ClassifierMixin):
+    """A simple classification model to distinguish between different categories.
+    
+    This model tries to draw a mathematical boundary between different classes
+    in the dataset. It calculates the probability of a sample belonging to a 
+    certain category and makes a decision based on those probabilities.
+    
+    Parameters
+    ----------
+    regularization_strength : float, default=1.0
+        Controls how strictly the model is penalized for being overly complex. 
+        Smaller values create simpler, more generalized boundaries (higher penalty), 
+        while larger values allow the model to fit the training data more closely 
+        (lower penalty), which might lead to overfitting.
         
+    max_iterations : int, default=100
+        The maximum number of attempts the model is allowed to make in order 
+        to find the optimal boundary. If the model hasn't converged (found 
+        the best solution) within this limit, it will stop learning.
+    """
+    
+    def __init__(self, regularization_strength=1.0, max_iterations=100):
+        """
+        Initializes the classifier.
+        """
+        self.regularization_strength = regularization_strength
+        self.max_iterations = max_iterations
+
+    def fit(self, X, y):
+        """
+        Fits the underlying classification model using the provided training data.
+        """
+        self._model = LogisticRegression(
+            C = self.regularization_strength,
+            max_iter = self.max_iterations
+        )
+        
+        self._model.fit(X, y)
+        return self
+
+    def predict(self, X):
+        """
+        Predicts the class labels for the provided data.
+        """
+        return self._model.predict(X)
+        
+    def predict_proba(self, X):
+        """
+        Predicts the probability of each class for the provided data.
+        Useful for students to understand how confident the model is.
+        """
+        return self._model.predict_proba(X)

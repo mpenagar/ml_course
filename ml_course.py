@@ -33,6 +33,11 @@ class SimpleRegressor(BaseModel):
         """        
         self._model = LinearRegression()
         self._model.fit(X, y)
+        # Exponer los metadatos de las características de entrada
+        if hasattr(self._model, 'n_features_in_'):
+            self.n_features_in_ = self._model.n_features_in_
+        if hasattr(self._model, 'feature_names_in_'):
+            self.feature_names_in_ = self._model.feature_names_in_     
         return self
 
         
@@ -84,10 +89,15 @@ class ComplexRegressor(BaseModel):
         )
         
         self._model.fit(X, y)
+        # Exponer los metadatos de las características de entrada
+        if hasattr(self._model, 'n_features_in_'):
+            self.n_features_in_ = self._model.n_features_in_
+        if hasattr(self._model, 'feature_names_in_'):
+            self.feature_names_in_ = self._model.feature_names_in_     
         return self
 
 
-class ACMEClassifier(BaseEstimator, ClassifierMixin):
+class ACMEClassifier(BaseEstimator,     ):
     """A simple classification model to distinguish between different categories.
     
     This model tries to draw a mathematical boundary between different classes
@@ -137,6 +147,15 @@ class ACMEClassifier(BaseEstimator, ClassifierMixin):
         )
         
         self._model.fit(X, y)
+        
+        # Exponer las clases aprendidas por el modelo interno
+        self.classes_ = self._model.classes_
+        # Exponer los metadatos de las características de entrada
+        if hasattr(self._model, 'n_features_in_'):
+            self.n_features_in_ = self._model.n_features_in_
+        if hasattr(self._model, 'feature_names_in_'):
+            self.feature_names_in_ = self._model.feature_names_in_     
+            
         return self
 
     def predict(self, X):
@@ -151,3 +170,9 @@ class ACMEClassifier(BaseEstimator, ClassifierMixin):
         Useful for students to understand how confident the model is.
         """
         return self._model.predict_proba(X)
+        
+    def decision_function(self, X):
+        """
+        Evaluates the decision function for the samples in X.
+        """
+        return self._model.decision_function(X)

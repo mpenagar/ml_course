@@ -97,7 +97,7 @@ class ComplexRegressor(BaseModel):
         return self
 
 
-class ACMEClassifier(BaseEstimator,     ):
+class ACMEClassifier(BaseEstimator, ClassifierMixin):
     """A simple classification model to distinguish between different categories.
     
     This model tries to draw a mathematical boundary between different classes
